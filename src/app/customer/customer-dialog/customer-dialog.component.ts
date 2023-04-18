@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-customer-dialog',
   templateUrl: './customer-dialog.component.html',
   styleUrls: ['./customer-dialog.component.scss']
 })
 export class CustomerDialogComponent {
-
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public readonly data?: { customerId: string; }
+  ) { }
 }
