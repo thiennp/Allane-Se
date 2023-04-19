@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { isDevMode, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,6 +18,7 @@ import { ContractOverviewModule } from './contract/contract-overview/contract-ov
     BrowserAnimationsModule,
     BrowserModule,
     ContractOverviewModule,
+    HttpClientModule,
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     StoreModule.forRoot({}, {}),
   ],
