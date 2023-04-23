@@ -1,0 +1,55 @@
+<form [formGroup]="form" (submit)="submit()">
+  <div mat-dialog-title>Contract Data</div>
+  <div mat-dialog-content>
+    <div class="flex flex-col gap-3">
+      <mat-form-field>
+        <mat-label>Monthly Rate</mat-label>
+        <input type="number" matInput formControlName="monthlyRate">
+        <mat-error *ngIf="isError('monthlyRate', 'required')">Monthly rate is required</mat-error>
+      </mat-form-field>
+
+      <div class="flex flex-col gap-3">
+        <mat-label>Customer</mat-label>
+
+        <ng-container *ngIf="controls.customer.value as customer, else selectNewCustomer">
+          <div class="flex flex-row gap-1">
+            <a class="underline cursor-pointer text-primary" (click)="selectCustomer(customer)">
+              {{ customer.firstName }} {{ customer.lastName }}
+            </a>
+          </div>
+        </ng-container>
+
+        <ng-template #selectNewCustomer>
+          <a class="italic underline cursor-pointer text-primary" (click)="selectCustomer()">
+            Please select a customer
+          </a>
+        </ng-template>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <mat-label>Vehicle</mat-label>
+
+        <ng-container *ngIf="controls.vehicle.value as vehicle, else selectNewVehicle">
+          <div class="flex flex-row gap-1">
+            <a class="underline cursor-pointer text-primary" (click)="selectVehicle(vehicle)">
+              {{ vehicle.brand }} {{ vehicle.model }}({{ vehicle.modelYear }})
+            </a>
+          </div>
+        </ng-container>
+
+        <ng-template #selectNewVehicle>
+          <a class="italic underline cursor-pointer text-primary" (click)="selectVehicle()">
+            Please select a vehicle
+          </a>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <div mat-dialog-actions>
+    <div class="flex flex-row justify-end gap-1 w-full">
+      <button type="button" mat-raised-button (click)="close()">Cancel</button>
+      <button type="submit" mat-raised-button color="primary" cdkFocusInitial>Submit</button>
+    </div>
+  </div>
+</form>
