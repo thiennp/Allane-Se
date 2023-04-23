@@ -1,0 +1,46 @@
+<form [formGroup]="form" (submit)="submit()">
+  <div mat-dialog-title="">Select a Car</div>
+  <div mat-dialog-content="">
+    <ng-container *ngIf="this.lazyLoadingControl.data$| async as vehicles">
+      <mat-radio-group class="flex flex-col gap-1 overflow-y-auto max-h-72" *ngIf="vehicles.numberOfItems"
+        formControlName="vehicleId" #matRadioGroup>
+        <div class="flex flex-col w-full" *ngFor="let vehicle of vehicles.overviewItems">
+          <div class="flex flex-row gap-32 justify-between items-center w-full">
+            <mat-radio-button [value]="vehicle.id">
+              <span>{{ vehicle.brand }} {{ vehicle.model }}({{ vehicle.modelYear }})</span>
+            </mat-radio-button>
+
+            <div class="flex flex-row items-center">
+              <button aria-label="Edit vehicle" (click)="editVehicle(vehicle.id)" mat-icon-button color="primary">
+                <mat-icon>edit</mat-icon>
+              </button>
+
+              <button aria-label="Delete vehicle" *ngIf="vehicle.id !== vehicleIdFormControl.value"
+                (click)="deleteVehicle(vehicle.id)" mat-icon-button color="accent">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+        </div>
+      </mat-radio-group>
+
+      <mat-progress-spinner *ngIf="this.lazyLoadingControl.loading$ | async, else noVehicle"></mat-progress-spinner>
+
+      <ng-template #noVehicle="">
+        <div *ngIf="!vehicles.numberOfItems">
+          There is no vehicle, please add one!
+        </div>
+      </ng-template>
+    </ng-container>
+  </div>
+
+  <div mat-dialog-actions="">
+    <div class="flex flex-row justify-end gap-1 w-full">
+      <button type="button" mat-raised-button (click)="close()">Cancel</button>
+      <button type="button" mat-raised-button color="accent" cdkFocusInitial (click)="createNewVehicle()">New
+        Vehicle</button>
+      <button type="submit" mat-raised-button color="primary" cdkFocusInitial>Select</button>
+    </div>
+  </div>
+</form>
