@@ -1,9 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { tap } from 'rxjs';
+import { map, tap } from 'rxjs';
 
 import { BrandService } from '../brand.service';
-import { VehicleDTO, VehicleService } from '../vehicle.service';
+import { VehicleService } from '../vehicle.service';
 import { VehicleDialogComponent } from './vehicle-dialog.component';
 
 export type EditVehicleDialogComponentData = {
@@ -19,10 +19,12 @@ export class EditVehicleDialogComponent extends VehicleDialogComponent {
   constructor(
     brandService: BrandService,
     vehicleService: VehicleService,
-    matDialogRef: MatDialogRef<VehicleDialogComponent, VehicleDTO>,
+    matDialogRef: MatDialogRef<VehicleDialogComponent, number>,
     @Inject(MAT_DIALOG_DATA) data: EditVehicleDialogComponentData,
   ) {
-    super(brandService, vehicleService, matDialogRef, (value) => vehicleService.update(data.vehicleId, value));
+    super(brandService, matDialogRef, (value) => vehicleService.update(data.vehicleId, value).pipe(
+      map(() => data.vehicleId),
+    ));
 
     this.loading$.next(true);
 

@@ -23,8 +23,8 @@ export abstract class CommonRestfulApiService<T, U = T> {
     return this.httpClient.delete<ResponseDTO>(`${environment.apiUrl}/${this.subdirectory}/${id}`);
   }
 
-  public update(id: number, item: T): Observable<U> {
-    return this.httpClient.put<U>(`${environment.apiUrl}/${this.subdirectory}/${id}`, item);
+  public update(id: number, item: T): Observable<null> {
+    return this.httpClient.put<null>(`${environment.apiUrl}/${this.subdirectory}/${id}`, item);
   }
 
   public create(item: T): Observable<U> {

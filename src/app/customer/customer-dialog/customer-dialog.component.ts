@@ -4,7 +4,7 @@ import * as moment from 'moment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
-import { CustomerService, RequestCustomerDTO, ResponseCustomerDTO } from '../customer.service';
+import { RequestCustomerDTO, ResponseCustomerDTO } from '../customer.service';
 
 
 export abstract class CustomerDialogComponent {
@@ -20,9 +20,8 @@ export abstract class CustomerDialogComponent {
   public readonly form = new FormGroup(this.controls);
 
   constructor(
-    protected readonly customerService: CustomerService,
-    private readonly matDialogRef: MatDialogRef<CustomerDialogComponent, ResponseCustomerDTO>,
-    private readonly saveData: (value: RequestCustomerDTO) => Observable<ResponseCustomerDTO>,
+    private readonly matDialogRef: MatDialogRef<CustomerDialogComponent, number>,
+    private readonly saveData: (value: RequestCustomerDTO) => Observable<number>,
   ) {
   }
 
@@ -36,7 +35,7 @@ export abstract class CustomerDialogComponent {
     }
   }
 
-  public close(data?: ResponseCustomerDTO) {
+  public close(data?: number) {
     this.matDialogRef.close(data);
   }
 

@@ -3,7 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { BehaviorSubject, combineLatest, filter, map, mergeMap, Observable, ReplaySubject, tap } from 'rxjs';
 
 import { BrandDTO, BrandService, ModelDTO } from '../brand.service';
-import { VehicleDTO, VehicleService } from '../vehicle.service';
+import { VehicleDTO } from '../vehicle.service';
 
 
 export abstract class VehicleDialogComponent {
@@ -25,9 +25,8 @@ export abstract class VehicleDialogComponent {
 
   protected constructor(
     brandService: BrandService,
-    protected readonly vehicleService: VehicleService,
-    private readonly matDialogRef: MatDialogRef<VehicleDialogComponent, VehicleDTO>,
-    private readonly saveData: (value: VehicleDTO) => Observable<VehicleDTO>,
+    private readonly matDialogRef: MatDialogRef<VehicleDialogComponent, number>,
+    private readonly saveData: (value: VehicleDTO) => Observable<number>,
   ) {
     this.brands$ = brandService.brands$;
     this.models$ = combineLatest([
@@ -57,7 +56,7 @@ export abstract class VehicleDialogComponent {
     }
   }
 
-  public close(data?: VehicleDTO) {
+  public close(data?: number) {
     this.matDialogRef.close(data);
   }
 

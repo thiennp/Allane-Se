@@ -66,21 +66,21 @@ export class SelectVehicleDialogComponent {
   }
 
   public createNewVehicle(): void {
-    this.matDialog.open<CreateVehicleDialogComponent, VehicleDTO>(
+    this.matDialog.open<CreateVehicleDialogComponent, number>(
       CreateVehicleDialogComponent,
       {
         disableClose: true,
       })
       .afterClosed()
       .pipe(
-        filter((vehicle): vehicle is VehicleDTO => !!vehicle),
-        tap(({ id }) => this.vehicleIdFormControl.setValue(id)),
+        filter((vehicleId): vehicleId is number => !!vehicleId),
+        tap((vehicleId) => this.vehicleIdFormControl.setValue(vehicleId)),
         tap(() => this.lazyLoadingControl.reset()),
       ).subscribe();
   }
 
   public editVehicle(vehicleId: number): void {
-    this.matDialog.open<EditVehicleDialogComponent, EditVehicleDialogComponentData, VehicleDTO>(
+    this.matDialog.open<EditVehicleDialogComponent, EditVehicleDialogComponentData, number>(
       EditVehicleDialogComponent,
       {
         data: { vehicleId },
@@ -88,8 +88,8 @@ export class SelectVehicleDialogComponent {
       })
       .afterClosed()
       .pipe(
-        filter((vehicle): vehicle is VehicleDTO => !!vehicle),
-        tap(({ id }) => this.vehicleIdFormControl.setValue(id)),
+        filter((vehicleId): vehicleId is number => !!vehicleId),
+        tap((vehicleId) => this.vehicleIdFormControl.setValue(vehicleId)),
         tap(() => this.lazyLoadingControl.reset()),
       ).subscribe();
   }

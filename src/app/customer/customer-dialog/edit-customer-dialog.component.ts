@@ -19,10 +19,12 @@ export class EditCustomerDialogComponent extends CustomerDialogComponent {
 
   constructor(
     customerService: CustomerService,
-    matDialogRef: MatDialogRef<CustomerDialogComponent, ResponseCustomerDTO>,
+    matDialogRef: MatDialogRef<CustomerDialogComponent, number>,
     @Inject(MAT_DIALOG_DATA) data: EditCustomerDialogComponentData,
   ) {
-    super(customerService, matDialogRef, (value) => customerService.update(data.customerId, value));
+    super(matDialogRef, (value) => customerService.update(data.customerId, value).pipe(
+      map(() => data.customerId),
+    ));
 
     this.loading$.next(true);
 

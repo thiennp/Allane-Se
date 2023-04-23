@@ -61,21 +61,21 @@ export class SelectCustomerDialogComponent implements OnDestroy {
   }
 
   public createNewCustomer(): void {
-    this.matDialog.open<CreateCustomerDialogComponent, undefined, ResponseCustomerDTO>(
+    this.matDialog.open<CreateCustomerDialogComponent, undefined, number>(
       CreateCustomerDialogComponent,
       {
         disableClose: true,
       })
       .afterClosed()
       .pipe(
-        filter((customer): customer is ResponseCustomerDTO => !!customer),
-        tap(({ id }) => this.customerIdFormControl.setValue(id)),
+        filter((customerId): customerId is number => !!customerId),
+        tap((customerId) => this.customerIdFormControl.setValue(customerId)),
         tap(() => this.lazyLoadingControl.reset()),
       ).subscribe();
   }
 
   public editCustomer(customerId: number): void {
-    this.matDialog.open<EditCustomerDialogComponent, EditCustomerDialogComponentData, ResponseCustomerDTO>(
+    this.matDialog.open<EditCustomerDialogComponent, EditCustomerDialogComponentData, number>(
       EditCustomerDialogComponent,
       {
         data: { customerId },
@@ -83,8 +83,8 @@ export class SelectCustomerDialogComponent implements OnDestroy {
       })
       .afterClosed()
       .pipe(
-        filter((customer): customer is ResponseCustomerDTO => !!customer),
-        tap(({ id }) => this.customerIdFormControl.setValue(id)),
+        filter((customerId): customerId is number => !!customerId),
+        tap((customerId) => this.customerIdFormControl.setValue(customerId)),
         tap(() => this.lazyLoadingControl.reset()),
       ).subscribe();
   }

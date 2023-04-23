@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { map } from 'rxjs';
 
 import { CustomerService, ResponseCustomerDTO } from '../customer.service';
 import { CustomerDialogComponent } from './customer-dialog.component';
@@ -11,8 +12,10 @@ export class CreateCustomerDialogComponent extends CustomerDialogComponent {
 
   constructor(
     customerService: CustomerService,
-    matDialogRef: MatDialogRef<CustomerDialogComponent, ResponseCustomerDTO>,
+    matDialogRef: MatDialogRef<CustomerDialogComponent, number>,
   ) {
-    super(customerService, matDialogRef, (value) => customerService.create(value));
+    super(matDialogRef, (value) => customerService.create(value).pipe(
+      map(({ id }) => id),
+    ));
   }
 }
