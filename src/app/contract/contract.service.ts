@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { CommonRestfulApiService } from '../common/restful-api.service';
 import { PageRequestDTO, PageResponseDTO } from '../common/restful-types';
-import { CustomerDto } from '../customer/customer.service';
+import { ResponseCustomerDTO } from '../customer/customer.service';
 import { VehicleDTO } from '../vehicle/vehicle.service';
 
 export type ContractOverviewDTO = {
@@ -23,7 +23,7 @@ export type ContractDTO = {
   id: number;
   monthlyRate: number;
   vehicle: VehicleDTO;
-  customer: CustomerDto;
+  customer: ResponseCustomerDTO;
 };
 
 

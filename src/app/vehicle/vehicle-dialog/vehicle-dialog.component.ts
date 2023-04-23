@@ -56,8 +56,8 @@ export abstract class VehicleDialogComponent {
     }
   }
 
-  public close(data?: number) {
-    this.matDialogRef.close(data);
+  public close(vehicleId?: number) {
+    this.matDialogRef.close(vehicleId);
   }
 
   public isError(field: keyof VehicleDTO, validatorKey: string): boolean {

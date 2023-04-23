@@ -4,7 +4,7 @@ import * as moment from 'moment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
-import { RequestCustomerDTO, ResponseCustomerDTO } from '../customer.service';
+import { RequestCustomerDTO } from '../customer.service';
 
 
 export abstract class CustomerDialogComponent {
@@ -35,8 +35,8 @@ export abstract class CustomerDialogComponent {
     }
   }
 
-  public close(data?: number) {
-    this.matDialogRef.close(data);
+  public close(customerId?: number) {
+    this.matDialogRef.close(customerId);
   }
 
   public isError(field: keyof RequestCustomerDTO, validatorKey: string): boolean {
