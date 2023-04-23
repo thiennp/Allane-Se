@@ -1,0 +1,8 @@
+<div mat-dialog-title>{{data.title}}</div>
+<div mat-dialog-content>{{data.content}}</div>
+<div mat-dialog-actions>
+  <div class="flex flex-row justify-end gap-1 w-full">
+    <button mat-raised-button (click)="reject()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="confirm()">Confirm</button>
+  </div>
+</div>
