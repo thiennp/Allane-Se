@@ -30,6 +30,6 @@ export class EditVehicleDialogComponent extends VehicleDialogComponent {
 
     vehicleService.getById(data.vehicleId).pipe(
       tap(() => this.loading$.next(false)),
-    ).subscribe((val) => this.form.setValue(val));
+    ).subscribe((val) => this.form.patchValue(val));
   }
 }
