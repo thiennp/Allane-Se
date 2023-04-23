@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BehaviorSubject, filter, mergeMap, ReplaySubject, Subject, tap } from 'rxjs';
@@ -25,6 +25,7 @@ export type SelectVehicleDialogComponentData = {
 
 @Component({
   templateUrl: './select-vehicle-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectVehicleDialogComponent {
   public readonly vehicleIdFormControl = new FormControl<number | null>(null, [Validators.required]);
@@ -34,17 +35,17 @@ export class SelectVehicleDialogComponent {
   private readonly destroy$ = new Subject<null>();
   private readonly matRadioGroup$ = new Subject<HTMLElement>();
 
-  public readonly lazyLoadingControl = new LazyLoadingControl({
-    parentElm: this.matRadioGroup$,
-    retrieveData: (page: number) => this.vehicleService.getVehicles({ page, size: environment.defaultPageSize, sort: Sort.ASC }),
-    destroy$: this.destroy$,
-  });
-
   @ViewChild('matRadioGroup') public set matRadioGroup(elementRef: ElementRef<HTMLElement> | undefined) {
     if (elementRef) {
       this.matRadioGroup$.next(elementRef.nativeElement);
     }
   };
+
+  public readonly lazyLoadingControl = new LazyLoadingControl({
+    parentElm: this.matRadioGroup$,
+    retrieveData: (page: number) => this.vehicleService.getVehicles({ page, size: environment.defaultPageSize, sort: Sort.ASC }),
+    destroy$: this.destroy$,
+  });
 
   constructor(
     private readonly vehicleService: VehicleService,
@@ -65,7 +66,11 @@ export class SelectVehicleDialogComponent {
   }
 
   public createNewVehicle(): void {
-    this.matDialog.open<CreateVehicleDialogComponent, VehicleDTO>(CreateVehicleDialogComponent)
+    this.matDialog.open<CreateVehicleDialogComponent, VehicleDTO>(
+      CreateVehicleDialogComponent,
+      {
+        disableClose: true,
+      })
       .afterClosed()
       .pipe(
         filter((vehicle): vehicle is VehicleDTO => !!vehicle),
@@ -79,6 +84,7 @@ export class SelectVehicleDialogComponent {
       EditVehicleDialogComponent,
       {
         data: { vehicleId },
+        disableClose: true,
       })
       .afterClosed()
       .pipe(
@@ -95,7 +101,8 @@ export class SelectVehicleDialogComponent {
         data: {
           title: 'Delete Vehicle',
           content: 'Please confirm that you want to delete this vehicle. The action is irreversible!',
-        }
+        },
+        disableClose: true,
       })
       .afterClosed()
       .pipe(

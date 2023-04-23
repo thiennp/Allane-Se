@@ -1,0 +1,48 @@
+<form [formGroup]="form" (submit)="submit()">
+  <div mat-dialog-title>Select a Customer</div>
+  <div mat-dialog-content>
+    <ng-container *ngIf="lazyLoadingControl.data$ | async as customers">
+      <mat-radio-group class="flex flex-col gap-1 overflow-y-auto max-h-72" *ngIf="customers.numberOfItems"
+        formControlName="customerId" #matRadioGroup>
+        <div class="flex flex-col w-full" *ngFor="let customer of customers.overviewItems">
+          <div class="flex flex-row gap-32 justify-between items-center w-full">
+            <mat-radio-button [value]="customer.id">
+              <span>{{ customer.firstName }} {{ customer.lastName }}</span>
+            </mat-radio-button>
+
+            <div class="flex flex-row items-center">
+              <button type="button" aria-label="Edit customer" (click)="editCustomer(customer.id)" mat-icon-button
+                color="primary">
+                <mat-icon>edit</mat-icon>
+              </button>
+
+              <button type="button" aria-label="Delete customer" (click)="deleteCustomer(customer.id)" mat-icon-button
+                color="accent" *ngIf="customer.id !== customerIdFormControl.value">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+        </div>
+      </mat-radio-group>
+
+      <mat-progress-spinner *ngIf="lazyLoadingControl.loading$ | async, else noCustomer"></mat-progress-spinner>
+
+      <ng-template #noCustomer>
+        <div *ngIf="!customers.numberOfItems">
+          There is no customer, please add one!
+        </div>
+      </ng-template>
+    </ng-container>
+  </div>
+
+  <div mat-dialog-actions>
+    <div class="flex flex-row justify-end gap-1 w-full">
+      <button type="button" mat-raised-button (click)="close()">Cancel</button>
+      <button type="button" mat-raised-button color="accent" cdkFocusInitial (click)="createNewCustomer()">New
+        Customer</button>
+      <button type="submit" mat-raised-button color="primary" cdkFocusInitial>Select</button>
+    </div>
+  </div>
+</form>
