@@ -25,7 +25,6 @@ export type SelectVehicleDialogComponentData = {
 
 @Component({
   templateUrl: './select-vehicle-dialog.component.html',
-  styleUrls: ['./select-vehicle-dialog.component.scss']
 })
 export class SelectVehicleDialogComponent {
   public readonly vehicleIdFormControl = new FormControl<number | null>(null, [Validators.required]);
