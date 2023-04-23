@@ -1,1 +1,38 @@
-<p>customer-dialog works!</p>
+<form [formGroup]="form" (submit)="submit()" *ngIf="!(loading$ | async), else spinner">
+  <div mat-dialog-title>Customer Data</div>
+  <div mat-dialog-content>
+    <div class="flex flex-col gap-3">
+      <mat-form-field>
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="firstName">
+        <mat-error *ngIf="isError('firstName', 'required')">First Name is Required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="lastName">
+        <mat-error *ngIf="isError('lastName', 'required')">Last Name is Required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Date of Birth</mat-label>
+        <input matInput formControlName="birthDate" [matDatepicker]="picker">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="isError('birthDate', 'required')">Date of Birth is Required</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div mat-dialog-actions>
+    <div class="flex flex-row justify-end gap-1 w-full">
+      <button type="button" mat-raised-button (click)="close()">Cancel</button>
+      <button type="submit" mat-raised-button color="primary" cdkFocusInitial>Submit</button>
+    </div>
+  </div>
+</form>
+
+<ng-template #spinner>
+  <mat-progress-spinner></mat-progress-spinner>
+</ng-template>

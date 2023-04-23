@@ -1,12 +1,46 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import * as moment from 'moment';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
-@Component({
-  templateUrl: './customer-dialog.component.html',
-  styleUrls: ['./customer-dialog.component.scss']
-})
-export class CustomerDialogComponent {
+import { CustomerService, RequestCustomerDTO, ResponseCustomerDTO } from '../customer.service';
+
+
+export abstract class CustomerDialogComponent {
+  public readonly loading$ = new BehaviorSubject(false);
+
+  private readonly controls: Record<keyof RequestCustomerDTO, AbstractControl> = {
+    id: new FormControl(),
+    firstName: new FormControl<string | null>(null, [Validators.required]),
+    lastName: new FormControl<string | null>(null, [Validators.required]),
+    birthDate: new FormControl<Date | null>(null, [Validators.required]),
+  };
+
+  public readonly form = new FormGroup(this.controls);
+
   constructor(
-    @Inject(MAT_DIALOG_DATA) public readonly data?: { customerId: string; }
-  ) { }
+    protected readonly customerService: CustomerService,
+    private readonly matDialogRef: MatDialogRef<CustomerDialogComponent, ResponseCustomerDTO>,
+    private readonly saveData: (value: RequestCustomerDTO) => Observable<ResponseCustomerDTO>,
+  ) {
+  }
+
+  public submit() {
+    if (this.form.valid) {
+      const value: RequestCustomerDTO = {
+        ...this.form.value as Omit<RequestCustomerDTO, 'birthDate'>,
+        birthDate: moment(this.controls.birthDate.value).format(environment.defaultDateFormat),
+      };
+      this.saveData(value).subscribe((data) => this.close(data));
+    }
+  }
+
+  public close(data?: ResponseCustomerDTO) {
+    this.matDialogRef.close(data);
+  }
+
+  public isError(field: keyof RequestCustomerDTO, validatorKey: string): boolean {
+    return !!this.form.get(field)?.errors?.[validatorKey];
+  }
 }
