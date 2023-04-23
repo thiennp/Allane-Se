@@ -1,6 +1,6 @@
 <form [formGroup]="form" (submit)="submit()">
-  <div mat-dialog-title="">Select a Car</div>
-  <div mat-dialog-content="">
+  <div mat-dialog-title>Select a Car</div>
+  <div mat-dialog-content>
     <ng-container *ngIf="this.lazyLoadingControl.data$| async as vehicles">
       <mat-radio-group class="flex flex-col gap-1 overflow-y-auto max-h-72" *ngIf="vehicles.numberOfItems"
         formControlName="vehicleId" #matRadioGroup>
@@ -27,7 +27,7 @@
 
       <mat-progress-spinner *ngIf="this.lazyLoadingControl.loading$ | async, else noVehicle"></mat-progress-spinner>
 
-      <ng-template #noVehicle="">
+      <ng-template #noVehicle>
         <div *ngIf="!vehicles.numberOfItems">
           There is no vehicle, please add one!
         </div>
@@ -35,7 +35,7 @@
     </ng-container>
   </div>
 
-  <div mat-dialog-actions="">
+  <div mat-dialog-actions>
     <div class="flex flex-row justify-end gap-1 w-full">
       <button type="button" mat-raised-button (click)="close()">Cancel</button>
       <button type="button" mat-raised-button color="accent" cdkFocusInitial (click)="createNewVehicle()">New

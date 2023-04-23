@@ -1,1 +1,58 @@
-<p>vehicle-dialog works!</p>
+<form [formGroup]="form" (submit)="submit()" *ngIf="!(loading$ | async), else spinner">
+  <div mat-dialog-title>Vehicle Data</div>
+  <div mat-dialog-content>
+    <div class="flex flex-col gap-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Brand</mat-label>
+        <mat-select formControlName="brand">
+          <mat-option *ngFor="let brand of brands$ | async" [value]="brand.name">
+            {{brand.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="isError('brand', 'required')">Brand is Required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Model</mat-label>
+        <mat-select formControlName="model">
+          <mat-option *ngFor="let model of models$ | async" [value]="model.name">
+            {{model.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="isError('model', 'required')">Brand is Required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Year</mat-label>
+        <mat-select formControlName="modelYear">
+          <mat-option *ngFor="let year of modelYears" [value]="year">
+            {{year}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="isError('modelYear', 'required')">Year is Required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>VIN</mat-label>
+        <input matInput formControlName="vin" [maxLength]="17">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Price</mat-label>
+        <input type="number" matInput formControlName="price">
+        <mat-error *ngIf="isError('price', 'required')">Price is Required</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div mat-dialog-actions>
+    <div class="flex flex-row justify-end gap-1 w-full">
+      <button type="button" mat-raised-button (click)="close()">Cancel</button>
+      <button type="submit" mat-raised-button color="primary" cdkFocusInitial>Submit</button>
+    </div>
+  </div>
+</form>
+
+<ng-template #spinner>
+  <mat-progress-spinner></mat-progress-spinner>
+</ng-template>
