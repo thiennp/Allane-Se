@@ -1,5 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { isDevMode, NgModule } from '@angular/core';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
@@ -19,6 +20,7 @@ import { ContractOverviewModule } from './contract/contract-overview/contract-ov
     BrowserModule,
     ContractOverviewModule,
     HttpClientModule,
+    MatToolbarModule,
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     StoreModule.forRoot({}, {}),
   ],
